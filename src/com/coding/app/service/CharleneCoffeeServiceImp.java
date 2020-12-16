@@ -1,5 +1,6 @@
 package com.coding.app.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -11,81 +12,168 @@ import com.coding.app.model.Ticket;
 
 public class CharleneCoffeeServiceImp implements CharleneCoffeeService{
 	
-	public Ticket receipt(List<Item> list, int stamp) {
+	public List<Item> prepare(String order) {
 		
-		//Order list by price
+		List<Item> list = new ArrayList<Item>();
+
+		ArrayList<String> products = new ArrayList<String>();
+		products.add("small coffee");
+		products.add("medium coffee");
+		products.add("large coffee");
+		products.add("bacon roll");
+		products.add("orange juice");
+		products.add("extra milk");
+		products.add("foamed milk");
+		products.add("special roast");
+		
+		order = order.toLowerCase();
+		String[] subOrders = order.split(",");
+		
+		
+
+		try {
+
+			for(int i=0; i<subOrders.length; i++) {
+			
+			for (String p : products) {
+
+				if (subOrders[i].contains(p)) {
+
+					switch (p) {
+					case "small coffee":
+						list.add(new Item("Coffee small", 2.50, "CHF", "B",""));
+						break;
+					case "medium coffee":
+						list.add(new Item("Coffee medium", 3.00, "CHF", "B",""));
+						break;
+					case "large coffee":
+						list.add(new Item("Coffee large", 3.50, "CHF", "B",""));
+						break;
+					case "bacon roll":
+						list.add(new Item("Bacon Roll", 4.50, "CHF", "S",""));
+						break;
+					case "orange juice":
+						list.add(new Item("Orange Juice", 3.95, "CHF", "B",""));
+						break;
+					case "extra milk":
+						list.add(new Item("Extra milk", 0.30, "CHF", "E",""));
+						break;
+					case "foamed milk":
+						list.add(new Item("Foamed milk", 0.50, "CHF", "E",""));
+						break;
+					case "special roast":
+						list.add(new Item("Special roast", 0.90, "CHF", "E",""));
+						break;
+					}
+					;
+
+				}
+				
+			}
+		}
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		return list;
+	}
+		 	
+	public Ticket execute(List<Item> list, int stamp) {
+		
+		//Order ascending list by price to apply PROMO in lower prices
 		Collections.sort(list); 
 		
 		//Check Beverage-Snack for FREE extra
-		boolean extraFree = isBeverageSnackOn(list);
-
+		int extraFree = extraFree(list);
+		//System.out.println("EXTRA: "+extraFree);
+		
 		//Check STAMP discount for FREE Beverage
-		boolean beverageFree = isStampCardOn(stamp);
+		int beverageFree = beverageFree(stamp);
+		//System.out.println("BEVERAGE: "+beverageFree);
 		
-		// Check tp apply PROMO		
-		if(extraFree) {
+		//---------------------------------------
+		List<Item> toCalculate = new ArrayList<Item>();
+		toCalculate.addAll(list);
+		
+		//----------------------------Extra Promo process		
+		int eCount = 0;
+		int c = 0;
+		while(extraFree > eCount) {
 			
-			Predicate<Item> condition = item -> item.getItemType().equals("E");			
-			list.removeIf(condition);        
-			System.out.println("Extra PROMO applyed.");   
+			for(Item i: toCalculate) {
+				
+				if(c<extraFree && i.getItemType().equals("E")) {
+					i.setPrice(0.0);
+					i.setHasPromo("* PROMO *");
+					c++;
+				}	
+			}					
+			//System.out.println("Extra PROMO applied.");
+			eCount++;
 		}
 		
-		if(beverageFree) {
+		//----------------------------Beverage Promo process
+		int bCount = 0;
+		c = 0;
+		while(beverageFree > bCount) {
 			
-			Predicate<Item> condition = item -> item.getItemType().equals("B");			
-			list.removeIf(condition);	        
-			System.out.println("Beverage PROMO applyed.");  
+			for(Item i: toCalculate) {
+				
+				if(c<beverageFree && i.getItemType().equals("B")) {
+					i.setPrice(0.0);
+					i.setHasPromo("* PROMO *");
+					c++;
+				}	
+			}
+			//System.out.println("Beverage PROMO applied.");
+			bCount++;
 		}
-			
-        Ticket ticket = new Ticket(list,stamp);
+		
+		//calculate TOTAL
+        Double total = 0.00;
+        for(Item i : toCalculate){
+            total = total + i.getPrice();
+        }
+	
+		
+		Ticket ticket = new Ticket();
+		
+        ticket.setTotal(total);
         ticket.setDate(new Date());
-
-        //set Items
         ticket.setItems(list);
 
         //Generate ID
         UUID uuid = UUID.randomUUID();
         ticket.setId(uuid.toString());
 
-        //calculate TOTAL
-        Double total = 0.00;
-        for(Item i : ticket.getItems()){
-            total = total + i.getPrice();
-        }
-        ticket.setTotal(total);
         return ticket;
     }
 
-    //Check Beverage - Snack to apply extra FREE
-    private boolean isBeverageSnackOn(List<Item> list) {
-		 boolean beverage = false;
-		 boolean snack = false;
-		 boolean isOn = false;
-		 
+    //------------------------Check Beverage - Snack to apply promotion FREE EXTRA
+    private int extraFree(List<Item> list) {
+		int countB = 0; 
+    	int countS = 0;
+    	int extrafree = 0;
+    	
     	 for (Item i : list){
     		 if(i.getItemType().equals("B")) {
-    			 beverage = true;
+    			 countB++;
     		 }
     		 if(i.getItemType().equals("S")) {
-    			 snack = true;
+    			 countS++;
     		 }
     	 }
-    	
-    	if(beverage && snack) {
-    		isOn = true;
-    	}
-    	return isOn;
+    	 
+    	extrafree = (countB<countS) ? countB : countS; 
+    	return extrafree;
     }
 
-    //Check stamp card number
-    private boolean isStampCardOn(int stamp) {
-    	boolean isOn = false;
+    //------------------------Check stamp card to apply promotion FREE BEVERAGE
+    private int beverageFree(float stamp) {
+    	int beveragefree = 0;
     	
-   		 if(stamp%5 == 0) {
-   			 isOn = true;
-   		 }
-   		 
-   		 return isOn;
+    	beveragefree = (int) (stamp/5);
+    	
+   		 return beveragefree;
    	 }
     
 }

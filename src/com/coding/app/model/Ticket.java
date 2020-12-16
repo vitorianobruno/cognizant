@@ -12,7 +12,7 @@ public class Ticket {
     List<Item> items = new ArrayList<Item>();
     Double total;
 
-    public Ticket(List<Item> list, int i) {
+    public Ticket() {
 		super();
 	}
     
@@ -63,7 +63,7 @@ public class Ticket {
 	public String toString() {
        
 		StringBuilder sb = new StringBuilder();
-        sb.append("\nId Receipt: ").append(id).append("\n");
+        sb.append("Id Receipt: ").append(id).append("\n");
         sb.append("Date      : ").append(date).append("\n");
         for (Item i : items) {
             sb.append(i.toString());

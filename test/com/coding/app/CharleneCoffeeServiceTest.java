@@ -2,7 +2,6 @@ package com.coding.app;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -17,18 +16,16 @@ class CharleneCoffeeServiceTest {
 	@Test
 	void testReceipt() {
 		
-		CharleneCoffeeService order = new CharleneCoffeeServiceImp();;
+		CharleneCoffeeService service = new CharleneCoffeeServiceImp();;
 		
-		List<Item> list = new ArrayList<Item>();
+		String order = "large coffee with extra milk";
+			
+		List<Item> items = service.prepare(order);
 		
-		list.add(new Item("Coffee small",2.50,"CHF","B"));
-		list.add(new Item("Bacon Roll",4.50,"CHF","S"));
-		list.add(new Item("Extra Milk",0.30,"CHF","E"));
-		
-		Ticket receipt = order.receipt(list, 5);
+		Ticket receipt = service.execute(items, 5);
 
 		Double received = receipt.getTotal();
-		Double expected = 4.50;
+		Double expected = 0.30;
 		
 		assertEquals(expected,received);
 	}

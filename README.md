@@ -6,39 +6,40 @@ choice of products, as business goes.
 
 ## Task
 
-simple program whose output is formatted like a receipt you would receive at a supermarket.
+A simple program whose output is formatted like a receipt you would receive at a supermarket.
 The input to the program is a list of products the shopper wants to purchase (large coffee with extra milk, small
 coffee with special roast, bacon roll, orange juice)
 
 ## Main class structure
 
 ```bash
-CharleneCoffeeService order = new CharleneCoffeeServiceImp();;
+CharleneCoffeeService service = new CharleneCoffeeServiceImp();;
 		
-		List<Item> list = new ArrayList<Item>();
+		String order = "large coffee with extra milk, small coffee with special roast, bacon roll, orange juice";
+			
+		List<Item> items = service.prepare(order);
 		
-		list.add(new Item("Coffee small",2.50,"CHF","B"));
-		list.add(new Item("Bacon Roll",4.50,"CHF","S"));
-		list.add(new Item("Extra Milk",0.30,"CHF","E"));
+		int stamp = (int)(Math.random()*20);
+		//System.out.println("STAMPS: " + stamp);
 		
-		System.out.println("======================");
-		System.out.println("Order 1. With 5 stamps \n");
-		Ticket receipt1 = order.receipt(list, 5); 
-		System.out.println(receipt1.toString());
+		Ticket receipt = service.execute(items, stamp);
+		
+		System.out.println("  TICKET ## Charlene's Coffee Corner ##");
+		System.out.println(receipt.toString());
 ```
 
 ## Expected result
 
 ```bash
-======================
-Order 1. With 5 stamps 
-
-Extra PROMO applyed.
-Beverage PROMO applyed.
-
-Id Receipt: 873055a6-9e91-459b-bade-4eed79e30eb7
-Date      : Wed Dec 16 18:26:55 CET 2020
-Item: Bacon Roll, 4.5, CHF
-Total     : 4.50 CHF
+  TICKET ## Charlene's Coffee Corner ##
+Id Receipt: 20ee28a5-ba44-4d59-89eb-c77e51e9e9bd
+Date      : Thu Dec 17 00:52:43 CET 2020
+Item      : Extra milk, 0.0, CHF * PROMO *
+Item      : Special roast, 0.9, CHF 
+Item      : Coffee small, 0.0, CHF * PROMO *
+Item      : Coffee large, 3.5, CHF 
+Item      : Orange Juice, 3.95, CHF 
+Item      : Bacon Roll, 4.5, CHF 
+Total     : 12.85 CHF
 ```
 

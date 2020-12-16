@@ -6,13 +6,15 @@ public class Item implements Comparable<Item> {
     Double price;
     String currency;
     String itemType;
+    String hasPromo;
 	
-	public Item(String description, Double price, String currency, String itemType) {
+	public Item(String description, Double price, String currency, String itemType, String hasPromo) {
 		super();
 		this.description = description;
 		this.price = price;
 		this.currency = currency;
 		this.itemType = itemType;
+		this.hasPromo = hasPromo;
 	}
 
 	public String getDescription() {
@@ -47,6 +49,14 @@ public class Item implements Comparable<Item> {
 		this.itemType = itemType;
 	}
 
+	public String getHasPromo() {
+		return hasPromo;
+	}
+
+	public void setHasPromo(String hasPromo) {
+		this.hasPromo = hasPromo;
+	}
+
 	@Override
 	public int compareTo(Item item) {
 		return this.price.compareTo(item.price);
@@ -54,7 +64,7 @@ public class Item implements Comparable<Item> {
 
 	@Override
 	public String toString() {
-		return "Item: " + description + ", " + price + ", " + currency + "\n";
+		return "Item      : " + description + ", " + price + ", " + currency + " " + hasPromo + "\n";
 	}
       
 }
