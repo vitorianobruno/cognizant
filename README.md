@@ -13,33 +13,30 @@ coffee with special roast, bacon roll, orange juice)
 ## Main class structure
 
 ```bash
-CharleneCoffeeService service = new CharleneCoffeeServiceImp();;
+public class CharleneCoffeeApp {
+	
+	public static void main(String[] args) {
+        
+		CharleneCoffeeService service = new CharleneCoffeeServiceImp();;
 		
 		String order = "large coffee with extra milk, small coffee with special roast, bacon roll, orange juice";
-			
-		List<Item> items = service.prepare(order);
 		
-		int stamp = (int)(Math.random()*20);
-		//System.out.println("STAMPS: " + stamp);
+		List<Products> products = service.prepare(order);
 		
-		Ticket receipt = service.execute(items, stamp);
-		
-		System.out.println("  TICKET ## Charlene's Coffee Corner ##");
-		System.out.println(receipt.toString());
 ```
 
 ## Expected result
 
 ```bash
-  TICKET ## Charlene's Coffee Corner ##
-Id Receipt: 20ee28a5-ba44-4d59-89eb-c77e51e9e9bd
-Date      : Thu Dec 17 00:52:43 CET 2020
+   TICKET ## Charlene's Coffee Corner ##
+Id Receipt: f3bd358d-93f9-443f-9c3a-472931fdf17d
+Date      : Thu Dec 17 19:11:41 CET 2020
+Item      : Small Coffee, 0.0, CHF * PROMO *
+Item      : Large Coffee, 3.5, CHF 
+Item      : Bacon Roll, 4.5, CHF 
+Item      : Orange Juice, 3.95, CHF 
 Item      : Extra milk, 0.0, CHF * PROMO *
 Item      : Special roast, 0.9, CHF 
-Item      : Coffee small, 0.0, CHF * PROMO *
-Item      : Coffee large, 3.5, CHF 
-Item      : Orange Juice, 3.95, CHF 
-Item      : Bacon Roll, 4.5, CHF 
 Total     : 12.85 CHF
 ```
 

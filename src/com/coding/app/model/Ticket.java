@@ -9,18 +9,18 @@ public class Ticket {
 	private static final String CTE_CURRENCY = "CHF";
     String id;
     Date date = new Date();
-    List<Item> items = new ArrayList<Item>();
+    List<Products> products = new ArrayList<Products>();
     Double total;
 
     public Ticket() {
 		super();
 	}
     
-    public Ticket(String id, Date date, List<Item> items, Double total) {
+    public Ticket(String id, Date date, List<Products> products, Double total) {
 		super();
 		this.id = id;
 		this.date = date;
-		this.items = items;
+		this.products = products;
 		this.total = total;
 	}
 
@@ -40,12 +40,12 @@ public class Ticket {
 		this.date = date;
 	}
 
-	public List<Item> getItems() {
-		return items;
+	public List<Products> getProducts() {
+		return products;
 	}
 
-	public void setItems(List<Item> items) {
-		this.items = items;
+	public void setProducts(List<Products> products) {
+		this.products = products;
 	}
 
 	public Double getTotal() {
@@ -65,8 +65,8 @@ public class Ticket {
 		StringBuilder sb = new StringBuilder();
         sb.append("Id Receipt: ").append(id).append("\n");
         sb.append("Date      : ").append(date).append("\n");
-        for (Item i : items) {
-            sb.append(i.toString());
+        for (Products p : products) {
+            sb.append(p.toString());
         }
         sb.append("Total     : ").append(String.format("%.2f", total)).append(" ").append(CTE_CURRENCY).append("\n");
         return sb.toString();
