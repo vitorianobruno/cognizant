@@ -41,7 +41,6 @@ public class CharleneCoffeeServiceImp implements CharleneCoffeeService{
 		
 		//Check STAMP discount for FREE Beverage
 		int beverageFree = beverageFree(stamp);
-
 		
 		//----------------------------BEGIN
 		List<Products> toCalculate = new ArrayList<Products>();

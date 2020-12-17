@@ -28,15 +28,16 @@ public class CharleneCoffeeApp {
 ## Expected result
 
 ```bash
+AVAILABLE STAMPS: 14
    TICKET ## Charlene's Coffee Corner ##
-Id Receipt: f3bd358d-93f9-443f-9c3a-472931fdf17d
-Date      : Thu Dec 17 19:11:41 CET 2020
+Id Receipt: 4cabf09f-fa47-4bb8-b45b-fc1b91fb2918
+Date      : Thu Dec 17 19:47:49 CET 2020
 Item      : Small Coffee, 0.0, CHF * PROMO *
-Item      : Large Coffee, 3.5, CHF 
+Item      : Large Coffee, 0.0, CHF * PROMO *
 Item      : Bacon Roll, 4.5, CHF 
 Item      : Orange Juice, 3.95, CHF 
 Item      : Extra milk, 0.0, CHF * PROMO *
 Item      : Special roast, 0.9, CHF 
-Total     : 12.85 CHF
+Total     : 9.35 CHF
 ```
 

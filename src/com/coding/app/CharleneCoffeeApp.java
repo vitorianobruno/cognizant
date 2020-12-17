@@ -18,6 +18,7 @@ public class CharleneCoffeeApp {
 		List<Products> products = service.prepare(order);
 		
 		int stamp = (int)(Math.random()*20);
+		System.out.println("AVAILABLE STAMPS: " + stamp);
 		
 		Ticket receipt = service.execute(products, stamp);
 		
